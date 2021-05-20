@@ -1,26 +1,62 @@
 ﻿using System;
+using System.Linq;
 
 namespace consoleAppSQLite
 {
     class Program
     {
-        static void Main(string[] args)
+        private static bool AddBlog(string strUrl, int intAvaliacao, string strTitulo, string strConteudo)
+        {
+            int contador = 0;
+            using (var db = new BlogContext())
+            {
+                var blog = new Blog { Url = strUrl, Avaliacao = intAvaliacao};
+                var post = new Post {Titulo = strTitulo, Conteudo = strConteudo, Blog = blog};
+                db.Blogs.Add(blog);
+                if(db.SaveChanges() > 0)
+                {
+                    db.Posts.Add(post);
+                    contador = db.SaveChanges();
+                }
+            }
+            return Convert.ToBoolean(contador);
+        }
+
+        public static bool RemovePost(int intId)
+        {
+            int contador = 0;
+            using (var db = new BlogContext())
+            {
+                db.Posts.Remove(new Post { PostId = intId });
+                contador = db.SaveChanges();
+            }
+            return Convert.ToBoolean(contador);
+        }
+        private static void ShowBlog()
         {
             using (var db = new BlogContext())
             {
-                db.Blogs.Add(new Blog { Url = "http://blogs.msdn.com/adonet" });
-                db.Blogs.Add(new Blog { Url = "http://macoratti.net/aspnet" });
-                db.Blogs.Add(new Blog { Url = "http://microsoft.msdn/vbnet" });
-                var contador = db.SaveChanges();
-                Console.WriteLine("{0} registros salvos no banco de dados ", contador);
-                Console.WriteLine();
-                Console.WriteLine("Todos os blogs no banco de dados:");
-
-                foreach (var blog in db.Blogs)
-                {
-                    Console.WriteLine(" - {0}", blog.Url);
-                }
+                foreach(var post in db.Posts.OrderBy(p => p.Titulo).ToList())
+                 {
+                    Console.WriteLine(post.BlogId);
+                    Console.WriteLine(post.Titulo);
+                    Console.WriteLine(post.Conteudo);
+                 }
             }
+        }
+        static void Main(string[] args)
+        {
+            Console.WriteLine("Informe o blog, avaliação , titulo e conteudo do post");
+            string strUrl = Console.ReadLine();
+            int intAvaliacao = Convert.ToInt32(Console.ReadLine()); 
+            string strTitulo = Console.ReadLine(); 
+            string strConteudo = Console.ReadLine();
+
+            if(AddBlog(strUrl, intAvaliacao, strTitulo, strConteudo))
+            {
+                ShowBlog();
+            }
+
         }
     }
 }

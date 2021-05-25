@@ -10,7 +10,7 @@ Para iniciar o desenvolvimento, é necessário clonar o projeto do GitHub no dir
 
 ```
 cd "diretorio de sua preferencia"
-git clone https://github.com/marianatmarinho/ExempleXUnitTest.git
+git clone https://github.com/marianatmarinho/consoleAppSQLite.git
 ```
 ### Ambiente de Desenvolvimento
 - .NET Core SDK 2.2

@@ -14,7 +14,7 @@ git clone https://github.com/marianatmarinho/ExempleXUnitTest.git
 ```
 ### Ambiente de Desenvolvimento
 ### Ambiente de Desenvolvimento
-- .NET Core SDK 1.1
+- .NET Core SDK 2.2
 - VS Code (Instale a extensão C# para o VS Code)
 - Entity Framework Core
 
